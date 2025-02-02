@@ -1,0 +1,324 @@
+{% load static %}
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Untree.co" />
+    <link rel="shortcut icon" href="favicon.png" />
+
+    <meta name="description" content="" />
+    <meta name="keywords" content="bootstrap, bootstrap5" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+
+    <link rel="stylesheet" href="{% static 'fonts/icomoon/style.css'%}" />
+    <link rel="stylesheet" href="{% static 'fonts/flaticon/font/flaticon.css' %}" />
+
+    <link rel="stylesheet" href="{% static 'css/tiny-slider.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" />
+
+    <link rel="stylesheet" href="{% static 'css/aos.css' %}" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+
+    <title>
+
+    </title>
+</head>
+<body class="bg-purple">
+  <div class="site-mobile-menu site-navbar-target">
+    <div class="site-mobile-menu-header">
+      <div class="site-mobile-menu-close">
+        <span class="icofont-close js-menu-toggle"></span>
+      </div>
+    </div>
+    <div class="site-mobile-menu-body"></div>
+  </div>
+  <nav class="site-nav">
+    <div class="container">
+      <div class="menu-bg-wrap">
+        <div class="site-navigation">
+          <a href="index.html" class="logo m-0 float-start">Property</a>
+          <ul class="js-clone-nav d-none d-lg-inline-block text-start site-menu float-end">
+            <li class="active"><a href="/">Home</a></li>
+
+            {% if user.user_type == "owner" %}
+              <li>
+
+              </li>
+            {% elif user.user_type == none %}
+               <li><a href="/">tala</a></li>
+            {% else %}
+              <li><a href="/">No house for you</a></li>
+            {% endif %}
+
+            <li><a href="about.html">About</a></li>
+            <li><a href="url">Services</a></li>
+            <li><a href="{% url 'logout' %}">Logout</a></li>
+          </ul>
+          <a href="#" class="burger light me-auto float-end mt-1 site-menu-toggle js-menu-toggle d-inline-block d-lg-none"
+              data-toggle="collapse"
+              data-target="#main-navbar">
+              <span></span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <main>
+    <section class=" section ">
+        <div class="container p-5">
+          <div class="row d-flex justify-content-center">
+            <div class="col col-lg-9 col-xl-8">
+              <div class="card">
+                <div class="rounded-top text-white d-flex flex-row" style="background-color: #000; height:200px;">
+                  <div class="mt-5 d-flex flex-column" style="width: 150px;">
+                    <img src="{% static 'images/dummy-dp.jpeg' %}"
+                      alt="profile" class="img-fluid img-thumbnail mt-4 mb-2 rounded-circle"
+                      style="width: 150px; z-index: 1">
+                    <a type="button" data-bs-toggle="collapse" data-bs-target="#collapseForm" class="btn text-white btn-sm btn-secondary btn-outline-secondary " data-mdb-ripple-color="dark" style="z-index: 1;">
+                      Post A House
+                    </a>
+                  </div>
+
+<!--                  <button class="btn btn-primary" type="button" >-->
+<!--                    Post A House-->
+<!--                </button>-->
+
+
+                  <div class="ms-3" style="margin-top: 130px;">
+                    <h5>{{ user.name }}</h5>
+                    <p>New York</p>
+                  </div>
+                </div>
+                <div class="p-4 text-black bg-body-tertiary">
+                  <div class="d-flex justify-content-end text-center text-body">
+                    <div>
+                      <p class="mb-1 h5">253</p>
+                      <p class="small text-muted mb-0">Photos</p>
+                    </div>
+                  </div>
+                </div>
+                 <!-- Collapsible Form -->
+                <div class="collapse mt-3" id="collapseForm">
+                    <div class="card card-body">
+                        <form action="{% url 'post-house' %}" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+
+                            <!-- Name Field -->
+                            <div class="form-group">
+                                {{ form.name.label_tag }}
+                                {{ form.name }}
+                                {% if form.name.errors %}
+                                    <div class="text-danger">
+                                        {% for error in form.name.errors %}
+                                            <small>{{ error }}</small>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Email Field -->
+                            <div class="form-group">
+                                {{ form.mail.label_tag }}
+                                {{ form.mail }}
+                                {% if form.mail.errors %}
+                                    <div class="text-danger">
+                                        {% for error in form.mail.errors %}
+                                            <small>{{ error }}</small>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Phone Field -->
+                            <div class="form-group">
+                                {{ form.phone.label_tag }}
+                                {{ form.phone }}
+                                {% if form.phone.errors %}
+                                    <div class="text-danger">
+                                        {% for error in form.phone.errors %}
+                                            <small>{{ error }}</small>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Address Field -->
+                            <div class="form-group">
+                                {{ form.address.label_tag }}
+                                {{ form.address }}
+                                {% if form.address.errors %}
+                                    <div class="text-danger">
+                                        {% for error in form.address.errors %}
+                                            <small>{{ error }}</small>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Bedrooms Field -->
+                            <div class="form-group">
+                                {{ form.bedrooms.label_tag }}
+                                {{ form.bedrooms }}
+                                {% if form.bedrooms.errors %}
+                                    <div class="text-danger">
+                                        {% for error in form.bedrooms.errors %}
+                                            <small>{{ error }}</small>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Bathrooms Field -->
+                            <div class="form-group">
+                                {{ form.bathrooms.label_tag }}
+                                {{ form.bathrooms }}
+                                {% if form.bathrooms.errors %}
+                                    <div class="text-danger">
+                                        {% for error in form.bathrooms.errors %}
+                                            <small>{{ error }}</small>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Price Field -->
+                            <div class="form-group">
+                                {{ form.price.label_tag }}
+                                {{ form.price }}
+                                {% if form.price.errors %}
+                                    <div class="text-danger">
+                                        {% for error in form.price.errors %}
+                                            <small>{{ error }}</small>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- House Type -->
+                            <div class="form-group">
+                                {{ form.type.label_tag }}
+                                {{ form.type }}
+                                {% if form.type.errors %}
+                                    <div class="text-danger">
+                                        {% for error in form.type.errors %}
+                                            <small>{{ error }}</small>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Description -->
+                            <div class="form-group">
+                                {{ form.description.label_tag }}
+                                {{ form.description }}
+                                {% if form.description.errors %}
+                                    <div class="text-danger">
+                                        {% for error in form.description.errors %}
+                                            <small>{{ error }}</small>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Image Upload -->
+                            <div class="form-group">
+                                {{ form.image.label_tag }}
+                                {{ form.image }}
+                                {% if form.image.errors %}
+                                    <div class="text-danger">
+                                        {% for error in form.image.errors %}
+                                            <small>{{ error }}</small>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Availability Checkbox -->
+                            <div class="form-check">
+                                {{ form.is_available }}
+                                {{ form.is_available.label_tag }}
+                                {% if form.is_available.errors %}
+                                    <div class="text-danger">
+                                        {% for error in form.is_available.errors %}
+                                            <small>{{ error }}</small>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <button type="submit" class="btn btn-success">Submit</button>
+                        </form>
+
+<!--                        <form action="{% url 'post-house' %}" method="POST">-->
+<!--                            {% csrf_token %}-->
+<!--                            <div class="form-group">-->
+<!--                                {{ form.as_p }}-->
+
+<!--                            </div>-->
+<!--                            <button type="submit" class="btn btn-success">Submit</button>-->
+<!--                        </form>-->
+                    </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </section>
+      <section class=" ">
+          <div class="container">
+              <div class="row d-flex justify-content-center">
+                <div class="col col-lg-9 col-xl-8">
+
+                  <div class="d-flex justify-content-between align-items-center  text-body">
+                    <p class="lead fw-normal mb-0">Recent photos</p>
+                    <p class="mb-0"><a href="#!" class="text-muted">Show all</a></p>
+                  </div>
+                  <div class="row g-2">
+                    <div class="col mb-2">
+                      <img src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(112).webp" alt="image 1"
+                        class="w-100 rounded-3">
+                    </div>
+                    <div class="col mb-2">
+                      <img src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(107).webp" alt="image 1"
+                        class="w-100 rounded-3">
+                    </div>
+                  </div>
+                  <div class="row g-2">
+                    <div class="col">
+                      <img src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(108).webp" alt="image 1"
+                        class="w-100 rounded-3">
+                    </div>
+                    <div class="col">
+                      <img src="https://mdbcdn.b-cdn.net/img/Photos/Lightbox/Original/img%20(114).webp" alt="image 1"
+                        class="w-100 rounded-3">
+                    </div>
+                  </div>
+                </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+        </section>
+
+
+  </main>
+</body>
+ <div id="overlayer"></div>
+    <div class="loader">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/tiny-slider.js' %}"></script>
+    <script src="{% static 'js/aos.js' %}"></script>
+    <script src="{% static 'js/navbar.js' %}"></script>
+    <script src="{% static 'js/counter.js' %}"></script>
+    <script src="{% static 'js/custom.js' %}"></script>
+</html>
