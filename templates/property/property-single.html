@@ -41,33 +41,18 @@
       <div class="container">
         <div class="menu-bg-wrap">
           <div class="site-navigation">
-            <a href="index.html" class="logo m-0 float-start">Property</a>
+            <a href="/" class="logo m-0 float-start">
+              <img class="img" src="{% static 'images/tkp.jpg' %}" style="width:80px; height:55px; mix-blend-mode:multiply;" >
+            </a>
             <ul class="js-clone-nav d-none d-lg-inline-block text-start site-menu float-end">
               <li class="active"><a href="/">Home</a></li>
-              <li class="has-children">
-                <a href="properties.html">Properties</a>
-                <ul class="dropdown">
-                  <li><a href="#">Buy Property</a></li>
-                  <li><a href="#">Sell Property</a></li>
-                  <li class="has-children">
-                    <a href="#">Dropdown</a>
-                    <ul class="dropdown">
-                      <li><a href="#">Sub Menu One</a></li>
-                      <li><a href="#">Sub Menu Two</a></li>
-                      <li><a href="#">Sub Menu Three</a></li>
-                    </ul>
-                  </li>
-                </ul>
-              </li>
-              <li><a href="/">Services</a></li>
-
-              <li><a href="about.html">About</a></li>
-              <li><a href="url">Services</a></li>
               {% if not user.is_authenticated %}
                 <li><a href="{% url 'login' %}">Login</a></li>
                 <li><a href="{% url 'register' %}">Sign up</a></li>
-              {% elif user.is_authenticated%}
-                <li><a href="{% url 'profile'%}">My Profile </a></li>
+              {% elif user.user_type == "owner" %}
+                  <li><a href="{% url 'profile'%}">My Profile </a></li>
+              {% else %}
+                <li><a href="{% url 'logout'%}">Logout</a></li>
               {% endif %}
             </ul>
 
@@ -102,7 +87,7 @@
               <ol class="breadcrumb text-center justify-content-center">
                 <li class="breadcrumb-item"><a href="/">Home</a></li>
                 <li class="breadcrumb-item">
-                  <a href="properties.html">Properties</a>
+                  <a href="{% url 'properties' %}">Properties</a>
                 </li>
                 <li class="breadcrumb-item active text-white-50" aria-current="page">
                   {{ house.name }}
@@ -133,7 +118,7 @@
               {{ house.description }}
             </p>
             <p class="text-black-50">
-              <a href="{% url 'apply' house.id %}" class="btn btn-secondary">Apply For This House</a>
+              <a href="{% url 'apply' house.id %}" class="btn btn-secondary">Make Reservation</a>
               {% if messages %}
                   <div class="alert-container">
                       {% for message in messages %}
@@ -149,10 +134,10 @@
             </p>
             <div class="d-block agent-box p-5">
               <div class="img mb-4">
-<!--                <img src="images/person_2-min.jpg" alt="Image" class="img-fluid"/>-->
               </div>
               <div class="text">
-                <h3 class="mb-0">{{ house.owner.name }}</h3>
+                <p><h3> House poster: </h3></p>
+                <h2 class="mb-0">{{ house.owner.name }}</h2>
                    <br><br>
 <!--                <div class="meta mb-3">Real Estate</div>-->
 <!--                <p>-->
@@ -161,16 +146,10 @@
 <!--                </p>-->
                 <ul class="list-unstyled social dark-hover d-flex">
                   <li class="me-1">
-                    <a href="#"><span class="icon-phone"></span></a>
+                    <a href="tell:{{ house.phone}}"><span class="icon-phone"></span></a>
                   </li>
                   <li class="me-1">
-                    <a href="#"><span class="icon-twitter"></span></a>
-                  </li>
-                  <li class="me-1">
-                    <a href="#"><span class="icon-facebook"></span></a>
-                  </li>
-                  <li class="me-1">
-                    <a href="#"><span class="icon-linkedin"></span></a>
+                    <a href="mailto:{{ house.mail }}"><span class="icon-envelope"></span></a>
                   </li>
                 </ul>
               </div>
@@ -179,19 +158,16 @@
         </div>
       </div>
     </div>
-
-    <div class="site-footer">
+ <div class="site-footer">
       <div class="container">
         <div class="row">
           <div class="col-lg-4">
             <div class="widget">
               <h3>Contact</h3>
-              <address>43 Raymouth Rd. Baltemoer, London 3910</address>
               <ul class="list-unstyled links">
-                <li><a href="tel://11234567890">+1(123)-456-7890</a></li>
-                <li><a href="tel://11234567890">+1(123)-456-7890</a></li>
+                <li><a href="tel://2349124050714">+2349124050714</a></li>
                 <li>
-                  <a href="mailto:info@mydomain.com">info@mydomain.com</a>
+                  <a href="mailto:tkpstay@gmail.com">tkpstay@gmail.com</a>
                 </li>
               </ul>
             </div>
@@ -200,22 +176,14 @@
           <!-- /.col-lg-4 -->
           <div class="col-lg-4">
             <div class="widget">
-              <h3>Sources</h3>
+              <h3>The Company</h3>
               <ul class="list-unstyled float-start links">
-                <li><a href="#">About us</a></li>
-                <li><a href="#">Services</a></li>
-                <li><a href="#">Vision</a></li>
-                <li><a href="#">Mission</a></li>
-                <li><a href="#">Terms</a></li>
-                <li><a href="#">Privacy</a></li>
-              </ul>
-              <ul class="list-unstyled float-start links">
-                <li><a href="#">Partners</a></li>
-                <li><a href="#">Business</a></li>
+                <li><a href="#">Site map </a></li>
+                <li><a href="#">Legal</a></li>
+                <li><a href="#">Agent Admin</a></li>
                 <li><a href="#">Careers</a></li>
-                <li><a href="#">Blog</a></li>
-                <li><a href="#">FAQ</a></li>
-                <li><a href="#">Creative</a></li>
+                <li><a href="#">Affiliate</a></li>
+                <li><a href="#">Privacy Policy</a></li>
               </ul>
             </div>
             <!-- /.widget -->
@@ -223,33 +191,15 @@
           <!-- /.col-lg-4 -->
           <div class="col-lg-4">
             <div class="widget">
-              <h3>Links</h3>
+              <h3>International sites</h3>
               <ul class="list-unstyled links">
-                <li><a href="#">Our Vision</a></li>
-                <li><a href="#">About us</a></li>
-                <li><a href="#">Contact us</a></li>
+                <li><a href="#">Venezuela</a></li>
+                <li><a href="#">China </a></li>
+                <li><a href="#">Argentina</a></li>
+                <li><a href="#">Singapore</a></li>
+                <li><a href="#">Philippines</a></li>
               </ul>
 
-              <ul class="list-unstyled social">
-                <li>
-                  <a href="#"><span class="icon-instagram"></span></a>
-                </li>
-                <li>
-                  <a href="#"><span class="icon-twitter"></span></a>
-                </li>
-                <li>
-                  <a href="#"><span class="icon-facebook"></span></a>
-                </li>
-                <li>
-                  <a href="#"><span class="icon-linkedin"></span></a>
-                </li>
-                <li>
-                  <a href="#"><span class="icon-pinterest"></span></a>
-                </li>
-                <li>
-                  <a href="#"><span class="icon-dribbble"></span></a>
-                </li>
-              </ul>
             </div>
             <!-- /.widget -->
           </div>
@@ -259,26 +209,13 @@
 
         <div class="row mt-5">
           <div class="col-12 text-center">
-            <!-- 
-              **==========
-              NOTE: 
-              Please don't remove this copyright link unless you buy the license here https://untree.co/license/  
-              **==========
-            -->
-
             <p>
               Copyright &copy;
               <script>
                 document.write(new Date().getFullYear());
               </script>
-              . All Rights Reserved. &mdash; Designed with love by
-              <a href="https://untree.co">Untree.co</a>
-              <!-- License information: https://untree.co/license/ -->
+              . All Rights Reserved.
             </p>
-            <div>
-              Distributed by
-              <a href="https://themewagon.com/" target="_blank">themewagon</a>
-            </div>
           </div>
         </div>
       </div>

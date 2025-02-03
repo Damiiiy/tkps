@@ -16,6 +16,12 @@ class HouseForm(forms.ModelForm):
         widget=forms.EmailInput(attrs={'class': 'form-control'}),
         help_text="Optional. Enter a valid email."
     )
+    location = forms.CharField(
+        max_length=300,
+        required=True,
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+        help_text="Enter the location."
+    )
 
     phone = forms.CharField(
         max_length=20,
@@ -78,7 +84,17 @@ class HouseForm(forms.ModelForm):
     )
 
     image = forms.ImageField(
-        required=False,
+        required=True,
+        widget=forms.ClearableFileInput(attrs={'class': 'form-control'}),
+        help_text="Optional. Upload an image of the house."
+    )
+    image2 = forms.ImageField(
+        required=True,
+        widget=forms.ClearableFileInput(attrs={'class': 'form-control'}),
+        help_text="Optional. Upload an image of the house."
+    )
+    image3 = forms.ImageField(
+        required=True,
         widget=forms.ClearableFileInput(attrs={'class': 'form-control'}),
         help_text="Optional. Upload an image of the house."
     )
@@ -86,8 +102,8 @@ class HouseForm(forms.ModelForm):
     class Meta:
         model = House
         fields = [
-            'name', 'mail', 'phone', 'address', 'bedrooms', 'bathrooms', 'price',
-            'is_available', 'type', 'description', 'image', 'owner'
+            'name', 'mail', 'phone', 'address', 'bedrooms', 'bathrooms', 'price', 'location',
+            'is_available', 'type', 'description', 'image', 'owner','image2','image3'
         ]
 
     def __init__(self, *args, **kwargs):

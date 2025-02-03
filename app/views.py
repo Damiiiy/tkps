@@ -1,4 +1,7 @@
+from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
+
+from property.models import House
 from .forms import *
 from .models import CustomUser
 
@@ -173,4 +176,11 @@ def userprofile(request):
     user = request.user
     form = HouseForm(user=user)
 
-    return render(request, 'accounts/profile.html', {'user': user, 'form':form})
+    houses = list(House.objects.filter(owner=user))  # Convert queryset to list for shuffling
+    random.shuffle(houses)  # Shuffle the list to display random houses
+    random_houses = houses[:5]
+    paginator = Paginator(houses, 9)  # Show 9 houses per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'accounts/profile.html', {'user': user, 'form':form,'page_obj': page_obj, 'houses': random_houses})

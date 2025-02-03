@@ -18,6 +18,7 @@ class House(models.Model):
     mail = models.EmailField(default='', null=True, blank=True)
     phone = models.CharField(max_length=20, default="", null=True, blank=True)
     address = models.CharField(max_length=300, default="")
+    location = models.CharField(max_length=200, default="")
     bedrooms = models.PositiveIntegerField(null=True, blank=True)
     bathrooms = models.PositiveIntegerField(null=True, blank=True)
     price = models.IntegerField(null=True, blank=True)

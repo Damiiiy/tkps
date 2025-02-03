@@ -8,6 +8,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import *
 from property.forms import HouseForm
+from django.core.paginator import Paginator
+from django.http import JsonResponse
+
 
 # Create your views here.
 
@@ -62,9 +65,57 @@ def apply(request, house_id):
     messages.success(request, "You have successfully applied for this house!")
     return redirect('view-house', id=house_id)  # Redirect to the house detail page
 
-def house_list(request):
+
+
+def search_houses(request):
+    query = request.GET.get('query', '')
+    price = request.GET.get('price', '')
+    bedrooms = request.GET.get('bedrooms', '')
+    bathrooms = request.GET.get('bathrooms', '')
+    location = request.GET.get('location', '')
+
     houses = House.objects.all()
-    return render(request, 'house_list.html', {'houses': houses})
+
+    if query:
+        houses = houses.filter(title__icontains=query)
+    if price:
+        houses = houses.filter(price__lte=price)  # Less than or equal to the price
+    if bedrooms:
+        houses = houses.filter(bedrooms__gte=bedrooms)  # At least the specified number of bedrooms
+    if bathrooms:
+        houses = houses.filter(bathrooms__gte=bathrooms)  # At least the specified number of bathrooms
+    if location:
+        houses = houses.filter(location__icontains=location)  # Partial match for location
+
+    results = [
+        {
+            "id": house.id,
+            "title": house.title,
+            "image": house.image.url,
+            "price": house.price,
+            "bedrooms": house.bedrooms,
+            "bathrooms": house.bathrooms,
+            "location": house.location,
+        }
+        for house in houses[:5]  # Limit results to 5
+    ]
+
+    return JsonResponse(results, safe=False)
+
+def all_houses(request):
+    houses = list(House.objects.all())  # Convert queryset to list for shuffling
+    random.shuffle(houses)  # Shuffle the list to display random houses
+    random_houses = houses[:5]
+    paginator = Paginator(houses, 9)  # Show 9 houses per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'property/properties.html', {'page_obj': page_obj, 'houses': random_houses})
+
+#
+# def all_houses(request):
+#     houses = House.objects.all()
+#     return render(request, 'property/properties.html', {'houses': houses})
 
 
 def house_create(request):
@@ -79,32 +130,34 @@ def house_create(request):
     
     return render(request, 'house_form.html', {'form': form})
 
-def house_update(request, pk):
-    house = get_object_or_404(House, pk=pk)
-    
-    if request.method == 'POST':
-        form = HouseForm(request.POST, request.FILES, instance=house)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "House listing updated successfully!")
-            return redirect('house_list')
-    else:
-        form = HouseForm(instance=house)
-    
-    return render(request, 'house_form.html', {'form': form})
 
-def house_delete(request, pk):
-    house = get_object_or_404(House, pk=pk)
-    
-    if request.method == 'POST':
-        house.delete()
-        messages.success(request,"House listing deleted successfully!")
-        return redirect('house_list')
-    
-    return render(request, 'house_confirm_delete.html', {'house': house})
+#
+# def house_update(request, pk):
+#     house = get_object_or_404(House, pk=pk)
+#
+#     if request.method == 'POST':
+#         form = HouseForm(request.POST, request.FILES, instance=house)
+#         if form.is_valid():
+#             form.save()
+#             messages.success(request, "House listing updated successfully!")
+#             return redirect('house_list')
+#     else:
+#         form = HouseForm(instance=house)
+#
+#     return render(request, 'house_form.html', {'form': form})
+#
+# def house_delete(request, pk):
+#     house = get_object_or_404(House, pk=pk)
+#
+#     if request.method == 'POST':
+#         house.delete()
+#         messages.success(request,"House listing deleted successfully!")
+#         return redirect('house_list')
+#
+#     return render(request, 'house_confirm_delete.html', {'house': house})
 
-# def search(request):
-#     houses = list(House.objects.all())  # Get all houses as a list
-#     random.shuffle(houses)  # Shuffle the list randomly
-#     selected_houses = houses[:3]  # Select the first 3 houses from the shuffled list
-#     return render(request, 'customer/search.html',  {'houses': selected_houses})
+def search(request):
+    houses = list(House.objects.all())  # Get all houses as a list
+    random.shuffle(houses)  # Shuffle the list randomly
+    selected_houses = houses[:3]  # Select the first 3 houses from the shuffled list
+    return render(request, 'customer/search.html',  {'houses': selected_houses})
