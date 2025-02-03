@@ -112,50 +112,6 @@ def all_houses(request):
 
     return render(request, 'property/properties.html', {'page_obj': page_obj, 'houses': random_houses})
 
-#
-# def all_houses(request):
-#     houses = House.objects.all()
-#     return render(request, 'property/properties.html', {'houses': houses})
-
-
-def house_create(request):
-    if request.method == 'POST':
-        form = HouseForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "House listing added successfully!")
-            return redirect('house_list')
-    else:
-        form = HouseForm()
-    
-    return render(request, 'house_form.html', {'form': form})
-
-
-#
-# def house_update(request, pk):
-#     house = get_object_or_404(House, pk=pk)
-#
-#     if request.method == 'POST':
-#         form = HouseForm(request.POST, request.FILES, instance=house)
-#         if form.is_valid():
-#             form.save()
-#             messages.success(request, "House listing updated successfully!")
-#             return redirect('house_list')
-#     else:
-#         form = HouseForm(instance=house)
-#
-#     return render(request, 'house_form.html', {'form': form})
-#
-# def house_delete(request, pk):
-#     house = get_object_or_404(House, pk=pk)
-#
-#     if request.method == 'POST':
-#         house.delete()
-#         messages.success(request,"House listing deleted successfully!")
-#         return redirect('house_list')
-#
-#     return render(request, 'house_confirm_delete.html', {'house': house})
-
 def search(request):
     houses = list(House.objects.all())  # Get all houses as a list
     random.shuffle(houses)  # Shuffle the list randomly

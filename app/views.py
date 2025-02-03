@@ -34,7 +34,7 @@ def login_view(request):
             if user is not None:
                 auth_login(request, user)
                 messages.success(request, 'Login successful!')
-                return redirect('profile')  # Redirect to profile or dashboard
+                return redirect('index')  # Redirect to profile or dashboard
             else:
                 messages.error(request, 'Invalid email or password.')
         else:
@@ -71,7 +71,7 @@ def login_auth(request):
                 messages.success(request, "Login successful!")
 
                 # Redirect to the stored session URL or default dashboard
-                next_url = request.session.pop('next', 'profile')  # Remove session key
+                next_url = request.session.pop('next', 'index')  # Remove session key
                 return redirect(next_url)
             else:
                 print("Authentication failed!")  # Debugging
@@ -84,45 +84,6 @@ def login_auth(request):
         form = CustomLoginForm()
 
     return render(request, 'accounts/login.html', {'form': form})
-
-
-# def login_auth(request):
-#     if request.method == 'POST':
-#         form = CustomLoginForm(request, data=request.POST)
-#         if form.is_valid():
-#             email = form.cleaned_data['email']  # Since we use email instead of username
-#             password = form.cleaned_data['password']
-#             user = authenticate(request, username=email, password=password)
-#
-#             if user is not None:
-#                 auth.login(request, user)
-#                 messages.success(request, "Login successful!")
-#
-#                 # Redirect to stored session URL or default dashboard
-#                 next_url = request.session.pop('next', 'dashboard')  # Remove session key
-#                 return redirect(next_url)
-#             else:
-#                 messages.error(request, "Invalid email or password.")  # Show error message
-#         else:
-#             messages.error(request, "Please correct the errors below.")
-#
-#             # if user is not None:
-#             #     auth.login(request, user)
-#             #     messages.success(request, "Login successful!")
-#             #     # return redirect('dashboard')  # Redirect to dashboard or home page
-#             #
-#             #     next_url = request.session.get('next')
-#             #     if next_url:
-#             #         del request.session['next']  # Destroy session after use
-#             #         return redirect(next_url)
-#             #     return redirect('dashboard')  # Default redirect after login
-#             #
-#     else:
-#         form = CustomLoginForm()
-#
-#     return render(request, 'accounts/login.html', {'form': form})
-#
-
 
 
 # this is for the registration aspect
