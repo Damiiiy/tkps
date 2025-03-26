@@ -74,7 +74,7 @@
   }
 
   .button {
-    background-color: purple;
+    background-color: #6d3215;
     color: #fff;
     padding: 10px;
     border: none;
@@ -84,7 +84,7 @@
   }
 
   button:hover {
-    background-color: #e63900;
+    background-color: #a78472;
   }
 
 </style>
@@ -95,45 +95,10 @@
 <div class="container">
   <div class="card">
     <h2>Login</h2>
-      {% comment %} <form action="{% url 'login' %}" method="POST">
-        {% csrf_token %}
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        {% endif %}
-    <!--field for email as username-->
 
-        <div class="form-group p-3">
-          <input type="email" name="username" class="form-control" placeholder="Enter your Email" required>
-          {% if form.username.errors %}
-                <div class="text-danger">
-                    {% for error in form.username.errors %}
-                        <small>{{ error }}</small>
-                    {% endfor %}
-                </div>
-            {% endif %}
-        </div>
-
-    <!-- field for password-->
-        <div class="form-group p-3">
-            {{ form.password }}
-            {% if form.password.errors %}
-                <div class="text-danger">
-                    {% for error in form.password.errors %}
-                        <small>{{ error }}</small>
-                    {% endfor %}
-                </div>
-            {% endif %}
-        </div>
-
-        <button type="submit" class="btn button rounded-pill">Login</button>
-    </form> {% endcomment %}
     <form action="{% url 'login' %}" method="POST">
           {% csrf_token %}
-                        {{ form.as_p }}
+                        {{ form }}
 
 <!--                {% if messages %}-->
 <!--                    <div>-->

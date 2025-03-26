@@ -45,12 +45,6 @@ def login_view(request):
     return render(request, 'accounts/login.html', {'form': form})
 
 
-# def login(request):
-#     if request.user.is_authenticated:
-#         pass
-#     else:
-#         form = CustomLoginForm()
-#         return render(request, 'accounts/login.html', {'form':form})
 
 
 def login_auth(request):

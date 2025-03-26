@@ -71,12 +71,10 @@ class CustomLoginForm(AuthenticationForm):
                 'placeholder': 'Enter your email',
                 'autofocus': True,
             }),
-            label="Email"
     )
     password = forms.CharField(
             widget=forms.PasswordInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'Enter your password',
             }),
-            label="Password"
         )
